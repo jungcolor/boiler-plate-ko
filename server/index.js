@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const config = require('./config/key');
 const cookieParser = require('cookie-parser');
 const { User } = require("./models/User");
+const { Board } = require("./models/Board");
 const { auth } = require("./middleware/auth");
 
 // application/x-www.form-urlencoded
@@ -22,6 +23,30 @@ mongoose.connect(config.mongoURI, {
     .catch(err => console.log(err));
 
 app.get('/', (req, res) => res.send('hello world!~~~ 안녕하세요'));
+
+// 게시판 server api 작업
+app.get('/api/board/list', (req, res) => {
+    Board.find((err, list) => {
+        if (err) return res.json({ success: false, err });
+        console.log(list);
+        return res.status(200).json({
+            surccess: true,
+            listData: list
+        });
+    });
+});
+
+app.get('/api/board/write', (req, res) => {
+    // 작성한 글 정보를 client에서 가져오면
+    // 가져온 데이터들을 데이터 베이스에 넣어준다.
+    const board = new Board(req.body);
+    board.save((err, data) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).json({
+            success: true
+        })
+    });
+});
 
 app.post('/api/users/register', (req, res) => {
     // 회원 가입 할 때 필요한 정보들을 client에서 가져오면
