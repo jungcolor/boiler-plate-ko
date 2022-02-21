@@ -2,7 +2,10 @@ import axios from "axios";
 import {
     LOGIN_USER,
     REGISTER_USER,
-    AUTH_USER
+    AUTH_USER,
+    BOARD_WRITER,
+    BOARD_REMOVE,
+    BOARD_UPDATE
 } from './types';
 
 export function loginUser(dataTosubmit) {
@@ -21,6 +24,36 @@ export function registerUser(dataTosubmit) {
 
     return {
         type: REGISTER_USER,
+        payload: request
+    }
+}
+
+export function boardWrite(dataTosubmit) {
+    const request = axios.post('/api/board/write', dataTosubmit)
+        .then(response => response.data);
+
+    return {
+        type: BOARD_WRITER,
+        payload: request
+    }
+}
+
+export function boardRemove(dataTosubmit) {
+    const request = axios.post('/api/board/remove', dataTosubmit)
+        .then(response => response.data);
+
+    return {
+        type: BOARD_REMOVE,
+        payload: request
+    }
+}
+
+export function boardUpdate(dataTosubmit) {
+    const request = axios.post('/api/board/update', dataTosubmit)
+        .then(response => response.data);
+
+    return {
+        type: BOARD_UPDATE,
         payload: request
     }
 }

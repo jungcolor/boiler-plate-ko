@@ -28,23 +28,49 @@ app.get('/', (req, res) => res.send('hello world!~~~ 안녕하세요'));
 app.get('/api/board/list', (req, res) => {
     Board.find((err, list) => {
         if (err) return res.json({ success: false, err });
-        console.log(list);
-        return res.status(200).json({
-            surccess: true,
-            listData: list
-        });
+        return res.status(200).json({ success: true, list });
     });
 });
 
-app.get('/api/board/write', (req, res) => {
+app.post('/api/board/detail', (req, res) => {
+    Board.find({ _id: req.body }, (err, detailData) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).json({ success: true, detailData });
+    });
+});
+
+app.post('/api/board/write', (req, res) => {
     // 작성한 글 정보를 client에서 가져오면
     // 가져온 데이터들을 데이터 베이스에 넣어준다.
     const board = new Board(req.body);
     board.save((err, data) => {
         if (err) return res.json({ success: false, err });
-        return res.status(200).json({
-            success: true
-        })
+        return res.status(200).json({ success: true });
+    });
+});
+
+app.post('/api/board/update', (req, res) => {
+    Board.findByIdAndUpdate(
+        { _id: req.body.id }, // target ID
+        {
+            $set: {
+                title: req.body.title,
+                writer: req.body.writer,
+                contents: req.body.contents,
+                writerDate: req.body.writerDate
+            }
+        }, // 변경 될 값
+        (err, updateData) => { // callback
+            if (err) return res.json({ success: false, err });
+            return res.status(200).json({ success: true, updateData });
+        }
+    )
+});
+
+app.post('/api/board/remove', (req, res) => {
+    Board.deleteMany({ _id: req.body }, (err, removeData) => {
+        if (err) return res.json({ success: false, err });
+        return res.status(200).json({ success: true });
     });
 });
 
@@ -54,9 +80,7 @@ app.post('/api/users/register', (req, res) => {
     const user = new User(req.body);
     user.save((err, userInfo) => {
         if (err) return res.json({ success: false, err });
-        return res.status(200).json({
-            success: true
-        })
+        return res.status(200).json({ success: true });
     });
 });
 

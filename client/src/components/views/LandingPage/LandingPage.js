@@ -5,7 +5,8 @@ import Auth from '../../../hoc/auth';
 
 function LandingPage() {
     const navigate = useNavigate(); // v5 이상
-    const onClickHandler = (event) => {
+
+    const onClickLogout = (event) => {
         axios.get('/api/users/logout')
             .then(response => {
                 if (response.data.success) {
@@ -17,13 +18,18 @@ function LandingPage() {
             });
     }
 
+    const onClickGoToList = (event) => {
+        navigate('/board/list');
+    }
+
     return (
         <div style={{
             display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh'
         }}>
             <h2>시작페이지</h2>
 
-            <button onClick={onClickHandler}>로그아웃</button>
+            <button id="board" onClick={onClickGoToList}>게시판이동</button>
+            <button id="logout" onClick={onClickLogout}>로그아웃</button>
         </div>
     );
 }

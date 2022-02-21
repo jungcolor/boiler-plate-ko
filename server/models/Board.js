@@ -2,27 +2,22 @@ const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 
 const boardSchema = mongoose.Schema({
-    number: {
-        type: Number
-    },
     title: {
         type: String,
-        minlength: 2
+        minlength: 1
     },
     writer: {
         type: String,
-        minlength: 2
     },
     contents: {
         type: String,
-        minlength: 5
+        minlength: 1
     },
     token: {
         type: String
     },
     writeDate: {
-        type: Date,
-        default: Date.now()
+        type: String,
     },
 });
 
