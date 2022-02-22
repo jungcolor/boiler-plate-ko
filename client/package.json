@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@ant-design/icons": "^4.7.0",
     "query-string": "^7.1.1"
   }
 }
