@@ -1,45 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../_actions/user_actions';
 import { useNavigate } from 'react-router-dom';
 import Auth from '../../../hoc/auth';
 
+// css
+import 'antd/dist/antd.css';
+import { Form, Input, Button, Space } from 'antd';
+
 function RegisterPage(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate(); // v5 이상
     // state 생성
-    const [Email, setEmail] = useState("");
-    const [Name, setName] = useState("");
-    const [Password, setPassword] = useState("");
-    const [ConfirmPassword, setConfirmPassword] = useState("");
+    const [form] = Form.useForm();
 
-    const onEmailHandler = (event) => {
-        setEmail(event.currentTarget.value);
-    }
-
-    const onNameHandler = (event) => {
-        setName(event.currentTarget.value);
-    }
-
-    const onPasswordHandler = (event) => {
-        setPassword(event.currentTarget.value);
-    }
-
-    const onConfirmPassword = (event) => {
-        setConfirmPassword(event.currentTarget.value);
-    }
-
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
-
-        if (Password !== ConfirmPassword) {
-            return alert('비밀번호와 비밀번호 확인은 같아야 합니다.');
-        }
-
-        let body = {
-            email: Email,
-            password: Password,
-            name: Name
+    const onFinishHandler = (formData) => {
+        const body = {
+            email: formData.email,
+            password: formData.password,
+            name: formData.name
         }
 
         dispatch(registerUser(body))
@@ -53,29 +32,98 @@ function RegisterPage(props) {
             });
     }
 
+    const onResetHandler = (event) => {
+        form.resetFields();
+    }
+
+    const layout = {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 19 }
+    };
+
+    const tailLayout = {
+        wrapperCol: { offset: 5, span: 19 }
+    };
+
     return (
-        <div style={{
-            display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh'
-        }}>
-            <form style={{
-                display: 'flex', flexDirection: 'column'
-            }} onSubmit={onSubmitHandler}>
-                <label>Email</label>
-                <input type="email" value={Email} onChange={onEmailHandler} />
+        <div style={{ width: "600px", margin: "0 auto" }}>
+            <Form
+                {...layout}
+                form={form}
+                name="register"
+                autoComplete="off"
+                onFinish={onFinishHandler}
+            >
+                <Form.Item
+                    label="이메일"
+                    name="email"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Email을 입력해주세요"
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="이름"
+                    name="name"
+                    rules={[
+                        {
+                            required: true,
+                            message: "Name을 입력해주세요"
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="비밀번호"
+                    name="password"
+                    rules={[
+                        {
+                            required: true,
+                            message: "비밀번호를 입력해주세요"
+                        }
+                    ]}
+                    hasFeedback
+                >
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item
+                    label="비밀번호확인"
+                    name="confirm"
+                    dependencies={['password']}
+                    hasFeedback
+                    rules={[
+                        {
+                            required: true,
+                            message: "비밀번호를 한번 더 입력해주세요"
+                        },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (!value || getFieldValue('password') === value) {
+                                    return Promise.resolve();
+                                }
 
-                <label>Name</label>
-                <input type="text" value={Name} onChange={onNameHandler} />
-
-                <label>Password</label>
-                <input type="password" value={Password} onChange={onPasswordHandler} />
-
-                <label>Confirm Password</label>
-                <input type="password" value={ConfirmPassword} onChange={onConfirmPassword} />
-
-                <br />
-                <button type="submit">회원가입</button>
-            </form>
-        </div >
+                                return Promise.reject(new Error('비밀번호와 맞지 않습니다'))
+                            }
+                        })
+                    ]}
+                >
+                    <Input.Password />
+                </Form.Item>
+                <Form.Item
+                    {...tailLayout}
+                >
+                    <Space>
+                        <Button type="primary" htmlType='submit'>회원가입</Button>
+                        <Button htmlType='button' onClick={onResetHandler}>다시작성</Button>
+                    </Space>
+                </Form.Item>
+            </Form>
+        </div>
     );
 }
 

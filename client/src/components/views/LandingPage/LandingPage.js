@@ -18,18 +18,10 @@ function LandingPage() {
             });
     }
 
-    const onClickGoToList = (event) => {
-        navigate('/board/list');
-    }
-
     return (
-        <div style={{
-            display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh'
-        }}>
+        <div>
             <h2>메인페이지</h2>
-
-            {/* <button id="board" onClick={onClickGoToList}>게시판이동</button>
-            <button id="logout" onClick={onClickLogout}>로그아웃</button> */}
+            <button id="logout" onClick={onClickLogout}>로그아웃</button>
         </div>
     );
 }

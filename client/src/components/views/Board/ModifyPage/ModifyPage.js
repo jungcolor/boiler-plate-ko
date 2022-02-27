@@ -5,14 +5,18 @@ import { useDispatch } from 'react-redux';
 import { boardUpdate } from '../../../../_actions/user_actions';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+// css
+import 'antd/dist/antd.css';
+import { Form, Input, Button, Space } from 'antd';
+
 function ModifyPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { search } = useLocation();
     const { board_ID } = queryString.parse(search);
-    const [title, setTitle] = useState('');
-    const [writer, setWriter] = useState('');
-    const [contents, setContents] = useState('');
+
+    // state
+    const [form] = Form.useForm();
 
     const fetchData = async () => {
         const body = {
@@ -22,9 +26,20 @@ function ModifyPage() {
         await axios.post('/api/board/Detail', body)
             .then(response => {
                 const detailData = response.data.detailData[0];
-                setTitle(detailData.title);
-                setWriter(detailData.writer);
-                setContents(detailData.contents);
+                form.setFields([
+                    {
+                        name: "title",
+                        value: detailData.title
+                    },
+                    {
+                        name: "writer",
+                        value: detailData.writer
+                    },
+                    {
+                        name: "contents",
+                        value: detailData.contents
+                    }
+                ]);
             });
     }
 
@@ -32,27 +47,13 @@ function ModifyPage() {
         fetchData();
     }, []);
 
-    const onTitleHandler = (event) => {
-        setTitle(event.currentTarget.value);
-    }
-
-    const onWriteHandler = (event) => {
-        setWriter(event.currentTarget.value);
-    }
-
-    const onContentsHandler = (event) => {
-        setContents(event.currentTarget.value);
-    }
-
-    const onSubmitHandler = (event) => {
-        event.preventDefault();
-
+    const onSubmitHandler = (formData) => {
         const body = {
             id: board_ID,
-            title: title,
-            writer: writer,
-            contents: contents,
-            writeDate: dateFormat()
+            title: formData.title,
+            writer: formData.writer,
+            contents: formData.contents,
+            writeDate: toStringByFormatting()
         }
 
         dispatch(boardUpdate(body))
@@ -70,36 +71,96 @@ function ModifyPage() {
             });
     }
 
-    const onClickGoToBoard = (event) => {
+    const onResetHandler = (event) => {
+        form.resetFields();
+    }
+
+    const onListHandler = (event) => {
         navigate('/board/list');
     }
 
-    const dateFormat = () => {
-        const date = new Date();
+    const leftPad = (value) => {
+        if (value >= 10) {
+            return value;
+        }
 
-        return date.toLocaleDateString().replace(" ", "");
+        return `0${value}`;
     }
 
+    const toStringByFormatting = (delimiter = '/') => {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = leftPad(date.getMonth() + 1);
+        const day = leftPad(date.getDate());
+
+        return [year, month, day].join(delimiter);
+    }
+
+    const layout = {
+        labelCol: { span: 5 },
+        wrapperCol: { span: 19 }
+    };
+
+    const tailLayout = {
+        wrapperCol: { offset: 5, span: 19 }
+    };
+
     return (
-        <div style={{
-            display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '100vh'
-        }}>
-            <form style={{
-                display: 'flex', flexDirection: 'column'
-            }} onSubmit={onSubmitHandler}>
-                <label>제목</label>
-                <input type="text" value={title} onChange={onTitleHandler} />
+        <div style={{ width: "850px", margin: "0 auto" }}>
+            <Form
+                {...layout}
+                form={form}
+                name="modify"
+                autoComplete="off"
+                onFinish={onSubmitHandler}
+            >
+                <Form.Item
+                    label="제목"
+                    name="title"
+                    rules={[
+                        {
+                            required: true,
+                            message: "제목을 입력해주세요"
+                        }
+                    ]}
 
-                <label>작성자</label>
-                <input type="text" value={writer} onChange={onWriteHandler} />
-
-                <label>내용</label>
-                <textarea value={contents} rows={5} cols={30} onChange={onContentsHandler}></textarea>
-
-                <br />
-                <button type="submit" onClick={onSubmitHandler}>저장</button>
-                <button onClick={onClickGoToBoard}>목록으로</button>
-            </form>
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="작성자"
+                    name="writer"
+                    rules={[
+                        {
+                            required: true,
+                            message: "작성자를 입력해주세요"
+                        }
+                    ]}
+                >
+                    <Input />
+                </Form.Item>
+                <Form.Item
+                    label="내용"
+                    name="contents"
+                    rules={[
+                        {
+                            required: true,
+                            message: "내용을 입력해주세요"
+                        }
+                    ]}
+                >
+                    <Input.TextArea rows={6} />
+                </Form.Item>
+                <Form.Item
+                    {...tailLayout}
+                >
+                    <Space>
+                        <Button type="primary" htmlType='submit'>수정완료</Button>
+                        <Button htmlType='button' onClick={onResetHandler}>다시작성</Button>
+                        <Button htmlType='button' onClick={onListHandler}>목록으로</Button>
+                    </Space>
+                </Form.Item>
+            </Form>
         </div >
     );
 };
