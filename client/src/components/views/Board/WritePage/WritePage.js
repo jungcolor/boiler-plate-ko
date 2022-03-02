@@ -72,7 +72,7 @@ function WritePage() {
     };
 
     return (
-        <div style={{ width: "850px", margin: "0 auto" }}>
+        <>
             <Form
                 {...layout}
                 form={form}
@@ -127,7 +127,7 @@ function WritePage() {
                     </Space>
                 </Form.Item>
             </Form>
-        </div >
+        </ >
     );
 }
 

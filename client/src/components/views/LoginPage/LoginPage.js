@@ -41,7 +41,7 @@ function LoginPage() {
     };
 
     return (
-        <div style={{ width: "600px", margin: "0 auto" }}>
+        <>
             <Form
                 {...layout}
                 form={form}
@@ -81,23 +81,7 @@ function LoginPage() {
                     </Space>
                 </Form.Item>
             </Form>
-        </div>
-
-
-        // <div style={{
-        //     display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%'
-        // }}>
-        //     <form style={{
-        //         display: 'flex', flexDirection: 'column'
-        //     }} onSubmit={onSubmitHandler}>
-        //         <label>Email</label>
-        //         <input type="email" value={Email} onChange={onEmailHandler} />
-        //         <label>Password</label>
-        //         <input type="password" value={Password} onChange={onPasswordHandler} />
-        //         <br />
-        //         <button type="submit">Login</button>
-        //     </form>
-        // </div>
+        </>
     );
 }
 

@@ -5,7 +5,8 @@ import {
     AUTH_USER,
     BOARD_WRITER,
     BOARD_REMOVE,
-    BOARD_UPDATE
+    BOARD_UPDATE,
+    BOARD_SERACH,
 } from './types';
 
 export function loginUser(dataTosubmit) {
@@ -54,6 +55,16 @@ export function boardUpdate(dataTosubmit) {
 
     return {
         type: BOARD_UPDATE,
+        payload: request
+    }
+}
+
+export function boardSearch(dataTosubmit) {
+    const request = axios.post('/api/board/search', dataTosubmit)
+        .then(response => response.data);
+
+    return {
+        type: BOARD_SERACH,
         payload: request
     }
 }

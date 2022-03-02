@@ -4,7 +4,8 @@ import {
     AUTH_USER,
     BOARD_WRITER,
     BOARD_REMOVE,
-    BOARD_UPDATE
+    BOARD_UPDATE,
+    BOARD_SERACH
 } from "../_actions/types";
 
 export default function aaa(state = {}, action) {
@@ -21,6 +22,8 @@ export default function aaa(state = {}, action) {
             return { ...state, removeData: action.payload }
         case BOARD_UPDATE:
             return { ...state, updataData: action.payload }
+        case BOARD_SERACH:
+            return { ...state, searchData: action.payload }
         default:
             return state;
     }

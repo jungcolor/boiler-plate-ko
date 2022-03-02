@@ -48,7 +48,7 @@ function DetailPage() {
     };
 
     return (
-        <div style={{ width: "850px", margin: "0 auto" }}>
+        <>
             <Form
                 {...layout}
                 form={form}
@@ -112,7 +112,7 @@ function DetailPage() {
                     <button onClick={onClickGoTolist}>목록</button>
                 </div>
             </ul> */}
-        </div >
+        </ >
     );
 };
 

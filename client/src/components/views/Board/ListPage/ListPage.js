@@ -2,24 +2,38 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
-import { boardRemove } from '../../../../_actions/user_actions';
+import { boardRemove, boardSearch } from '../../../../_actions/user_actions';
 
 // css
 import 'antd/dist/antd.css';
-import { Table, Button, Space } from 'antd';
+import { Table, Button, Space, Input } from 'antd';
 
 function ListPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [rows, setRows] = useState([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const { Search } = Input;
+
+    const fetchData = async () => {
+        await axios.get('/api/board/list')
+            .then(response => {
+                const rowsData = response.data.list;
+                setRows(rowsData);
+            });
+    }
+
+    // 마운트 + [ items ] 변경될때만 실행
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const onNewHandler = event => {
+        navigate('/board/write');
+    }
 
     const onChangeHandler = selectedRowKeys => {
         setSelectedRowKeys(selectedRowKeys);
-    }
-
-    const onNewHandler = event => {
-        navigate('../board/write');
     }
 
     const onDeleteHandler = event => {
@@ -34,19 +48,24 @@ function ListPage() {
             });
     }
 
-    const fetchData = async () => {
-        await axios.get('/api/board/list')
-            .then(response => {
-                console.log(response);
-                const rowsData = response.data.list;
-                setRows(rowsData);
-            });
-    }
+    const onSearchHandler = searchValue => {
+        if (searchValue === "") {
+            fetchData();
+            navigate(`/board/list`);
+            return false;
+        }
 
-    // 마운트 + [ items ] 변경될때만 실행
-    useEffect(() => {
-        fetchData();
-    }, []);
+        const body = { contents: searchValue };
+
+        dispatch(boardSearch(body))
+            .then(response => {
+                if (response.payload.success) {
+                    setRows(response.payload.searchData);
+                }
+            });
+
+        navigate(`/board/list?search=${searchValue}`);
+    }
 
     const rowSelection = {
         selectedRowKeys,
@@ -84,10 +103,8 @@ function ListPage() {
     ];
 
     const getCellData = () => {
-        const cellData = [];
-
-        rows && rows.forEach((row, idx) => {
-            cellData.push({
+        return rows.map((row, idx) => {
+            return {
                 key: row._id,
                 number: idx + 1,
                 title: {
@@ -96,29 +113,33 @@ function ListPage() {
                 },
                 writer: row.writer,
                 writeDate: row.writeDate
-            });
+            }
         });
-
-        return cellData;
     };
 
+    const cellData = getCellData();
+
     return (
-        <div style={{ width: "850px", margin: "0 auto" }}>
+        <Space direction="vertical">
+            <Space>
+                <Search placeholder="검색어를 입력해주세요" onSearch={onSearchHandler} />
+            </Space>
             <Table
                 rowSelection={rowSelection}
                 pagination={{
                     position: ["bottomCenter"]
                 }}
                 columns={columns}
-                dataSource={getCellData()}
+                dataSource={cellData}
                 bordered={true}
-                size={"small"}
+                size={"middle"}
+                tableLayout={"fixed"}
             />
             <Space>
                 <Button type="primary" onClick={onNewHandler}>신규</Button>
                 <Button onClick={onDeleteHandler}>삭제</Button>
             </Space>
-        </div>
+        </Space>
     );
 }
 
