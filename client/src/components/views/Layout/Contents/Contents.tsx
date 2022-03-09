@@ -3,7 +3,6 @@ import Router from '../../../../_router/Router';
 
 // css design
 import '../../../../App.css';
-import 'antd/dist/antd.css';
 import { Layout } from 'antd';
 
 function Contents() {

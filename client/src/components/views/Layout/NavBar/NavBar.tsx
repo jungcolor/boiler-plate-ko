@@ -1,10 +1,9 @@
-import React from 'react';
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 // css
-import 'antd/dist/antd.css';
-import { Menu } from 'antd';
-import { HomeOutlined, LoginOutlined, EllipsisOutlined, ProfileOutlined } from '@ant-design/icons';
+import { Menu } from "antd";
+import { HomeOutlined, LoginOutlined, EllipsisOutlined, ProfileOutlined } from "@ant-design/icons";
 
 function NavBar() {
     const location = useLocation();
@@ -30,8 +29,8 @@ function NavBar() {
                 break;
         }
 
-        return key;
-    }
+        return [key];
+    };
 
     return (
         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={getSelectedKey()}>

@@ -1,14 +1,14 @@
-import React from 'react';
+import * as React from "react";
 import { Routes, Route } from "react-router-dom";
 
 // sub page
-import LandingPage from '../components/views/LandingPage/LandingPage'
-import LoginPage from '../components/views/LoginPage/LoginPage';
-import RegisterPage from '../components/views/RegisterPage/RegisterPage';
-import ListPage from '../components/views/Board/ListPage/ListPage';
-import WritePage from '../components/views/Board/WritePage/WritePage';
-import DetailPage from '../components/views/Board/DetailPage/DetailPage';
-import ModifyPage from '../components/views/Board/ModifyPage/ModifyPage';
+import LandingPage from "../components/views/LandingPage/LandingPage";
+import LoginPage from "../components/views/LoginPage/LoginPage";
+import RegisterPage from "../components/views/RegisterPage/RegisterPage";
+import ListPage from "../components/views/Board/ListPage/ListPage";
+import WritePage from "../components/views/Board/WritePage/WritePage";
+import DetailPage from "../components/views/Board/DetailPage/DetailPage";
+import ModifyPage from "../components/views/Board/ModifyPage/ModifyPage";
 
 function Router() {
     return (

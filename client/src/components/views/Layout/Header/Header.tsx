@@ -2,7 +2,6 @@ import React from 'react';
 import NavBar from '../NavBar/NavBar';
 
 // css
-import 'antd/dist/antd.css';
 import { Layout } from 'antd';
 
 function Header() {

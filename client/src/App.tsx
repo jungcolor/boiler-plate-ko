@@ -1,3 +1,4 @@
+import * as React from "react";
 import Page from "./components/views/Layout/Page/Page";
 import { BrowserRouter } from "react-router-dom";
 

@@ -1,7 +1,6 @@
 import React from 'react';
 
 // css design
-import 'antd/dist/antd.css';
 import { Layout } from 'antd';
 
 function Footer() {

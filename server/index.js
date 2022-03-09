@@ -68,7 +68,6 @@ app.post('/api/board/update', (req, res) => {
 });
 
 app.post('/api/board/search', (req, res) => {
-    console.log(req.body.contents);
     Board.find({ title: { $regex: req.body.contents } }, (err, searchData) => {
         console.log(searchData);
         if (err) return res.json({ success: false, err });

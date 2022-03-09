@@ -1,12 +1,11 @@
-import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch } from 'react-redux';
-import { boardRemove, boardSearch } from '../../../../_actions/user_actions';
+import { useDispatch } from "react-redux";
+import { boardRemove, boardSearch } from "../../../../_actions/user_actions";
 
 // css
-import 'antd/dist/antd.css';
-import { Table, Button, Space, Input } from 'antd';
+import { Table, Button, Space, Input } from "antd";
 
 function ListPage() {
     const dispatch = useDispatch();
@@ -16,39 +15,37 @@ function ListPage() {
     const { Search } = Input;
 
     const fetchData = async () => {
-        await axios.get('/api/board/list')
-            .then(response => {
-                const rowsData = response.data.list;
-                setRows(rowsData);
-            });
-    }
+        await axios.get("/api/board/list").then((response) => {
+            const rowsData = response.data.list;
+            setRows(rowsData);
+        });
+    };
 
     // 마운트 + [ items ] 변경될때만 실행
     useEffect(() => {
         fetchData();
     }, []);
 
-    const onNewHandler = event => {
-        navigate('/board/write');
-    }
+    const onNewHandler = (event) => {
+        navigate("/board/write");
+    };
 
-    const onChangeHandler = selectedRowKeys => {
+    const onChangeHandler = (selectedRowKeys) => {
         setSelectedRowKeys(selectedRowKeys);
-    }
+    };
 
-    const onDeleteHandler = event => {
-        dispatch(boardRemove(selectedRowKeys))
-            .then(response => {
-                if (response.payload.success) {
-                    fetchData(); // 데이터 삭제 후 리스트를 보여주기 위해 호출
-                }
-                else {
-                    alert("Error!!");
-                }
-            });
-    }
+    const onDeleteHandler = (event) => {
+        dispatch(boardRemove(selectedRowKeys)).payload.then((response) => {
+            console.log(response);
+            if (response.payload.success) {
+                fetchData(); // 데이터 삭제 후 리스트를 보여주기 위해 호출
+            } else {
+                alert("Error!!");
+            }
+        });
+    };
 
-    const onSearchHandler = searchValue => {
+    const onSearchHandler = (searchValue: string) => {
         if (searchValue === "") {
             fetchData();
             navigate(`/board/list`);
@@ -57,20 +54,19 @@ function ListPage() {
 
         const body = { contents: searchValue };
 
-        dispatch(boardSearch(body))
-            .then(response => {
-                if (response.payload.success) {
-                    setRows(response.payload.searchData);
-                }
-            });
+        dispatch(boardSearch(body)).payload.then((response) => {
+            if (response.payload.success) {
+                setRows(response.payload.searchData);
+            }
+        });
 
         navigate(`/board/list?search=${searchValue}`);
-    }
+    };
 
     const rowSelection = {
         selectedRowKeys,
-        onChange: onChangeHandler
-    }
+        onChange: onChangeHandler,
+    };
 
     const columns = [
         {
@@ -78,27 +74,24 @@ function ListPage() {
             key: "number",
             dataIndex: "number",
             width: "6%",
-            align: "center"
         },
         {
             title: "제목",
             key: "title",
             dataIndex: "title",
-            render: titOptions => <Link to={`/board/detail?board_ID=${titOptions.id}`}>{titOptions.title}</Link>
+            render: (titOptions) => <Link to={`/board/detail?board_ID=${titOptions.id}`}>{titOptions.title}</Link>,
         },
         {
             title: "작성자",
             key: "writer",
             dataIndex: "writer",
             width: "17%",
-            align: "center"
         },
         {
             title: "작성날짜",
             key: "writeDate",
             dataIndex: "writeDate",
             width: "17%",
-            align: "center"
         },
     ];
 
@@ -112,8 +105,8 @@ function ListPage() {
                     title: row.title,
                 },
                 writer: row.writer,
-                writeDate: row.writeDate
-            }
+                writeDate: row.writeDate,
+            };
         });
     };
 
@@ -127,7 +120,7 @@ function ListPage() {
             <Table
                 rowSelection={rowSelection}
                 pagination={{
-                    position: ["bottomCenter"]
+                    position: ["bottomCenter"],
                 }}
                 columns={columns}
                 dataSource={cellData}
@@ -136,7 +129,9 @@ function ListPage() {
                 tableLayout={"fixed"}
             />
             <Space>
-                <Button type="primary" onClick={onNewHandler}>신규</Button>
+                <Button type="primary" onClick={onNewHandler}>
+                    신규
+                </Button>
                 <Button onClick={onDeleteHandler}>삭제</Button>
             </Space>
         </Space>
