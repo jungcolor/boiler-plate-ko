@@ -2,18 +2,20 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { auth } from "../_actions/user_actions";
 import { useNavigate } from "react-router-dom";
+import { WrapperTooltipProps } from "antd/lib/form/FormItemLabel";
 
-export default function (SpecificComponent, option, adminRoute = null) {
+function Auth(SpecificComponent: React.ComponentType, option: any, adminRoute: boolean = null): Function {
+    // adminRoute
     // null => 아무나 출입이 가능한 페이지
     // true => 로그인한 유저만 출입 가능한 페이지
     // false => 로그인한 유저는 출입 불가능한 페이지
 
-    function AuthenticationCheck(props) {
+    function AuthenticationCheck() {
         const dispatch = useDispatch();
         const navigate = useNavigate();
 
         useEffect(() => {
-            dispatch(auth()).payload.then((response) => {
+            dispatch(auth()).then((response) => {
                 console.log(response);
 
                 // 로그인 하지 않은 상태
@@ -39,3 +41,5 @@ export default function (SpecificComponent, option, adminRoute = null) {
 
     return AuthenticationCheck;
 }
+
+export default Auth;

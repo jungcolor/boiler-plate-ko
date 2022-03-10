@@ -6,7 +6,7 @@ import Auth from "../../../hoc/auth";
 function LandingPage() {
     const navigate = useNavigate(); // v5 이상
 
-    const onClickLogout = (event) => {
+    const onClickLogout = (event: React.MouseEvent<HTMLButtonElement>) => {
         axios.get("/api/users/logout").then((response) => {
             if (response.data.success) {
                 navigate("/login");

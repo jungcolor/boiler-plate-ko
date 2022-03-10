@@ -6,11 +6,6 @@ const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-    devServer: {
-        historyApiFallback: true,
-        port: 3000,
-        hot: true
-    },
     entry: {
         'js/app': ['./src/index.tsx'],
     },

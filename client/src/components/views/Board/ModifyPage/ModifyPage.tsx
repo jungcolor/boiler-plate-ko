@@ -8,6 +8,12 @@ import { useNavigate, useLocation } from "react-router-dom";
 // css
 import { Form, Input, Button, Space } from "antd";
 
+interface IFormDataDTO {
+    title: string;
+    writer: string;
+    contents: string;
+}
+
 function ModifyPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,6 +30,7 @@ function ModifyPage() {
 
         await axios.post("/api/board/Detail", body).then((response) => {
             const detailData = response.data.detailData[0];
+
             form.setFields([
                 {
                     name: "title",
@@ -45,7 +52,7 @@ function ModifyPage() {
         fetchData();
     }, []);
 
-    const onSubmitHandler = (formData) => {
+    const onSubmitHandler = (formData: IFormDataDTO) => {
         const body = {
             id: board_ID,
             title: formData.title,
@@ -54,7 +61,7 @@ function ModifyPage() {
             writeDate: toStringByFormatting(),
         };
 
-        dispatch(boardUpdate(body)).payload.then((response) => {
+        dispatch(boardUpdate(body)).then((response) => {
             if (response.payload.success) {
                 navigate("/board/list"); // v5이상
             } else {
@@ -67,15 +74,15 @@ function ModifyPage() {
         });
     };
 
-    const onResetHandler = (event) => {
+    const onResetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         form.resetFields();
     };
 
-    const onListHandler = (event) => {
+    const onListHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/board/list");
     };
 
-    const leftPad = (value) => {
+    const leftPad = (value: number) => {
         if (value >= 10) {
             return value;
         }

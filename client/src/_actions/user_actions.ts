@@ -1,8 +1,22 @@
 import axios from "axios";
 import { LOGIN_USER, REGISTER_USER, AUTH_USER, BOARD_WRITER, BOARD_REMOVE, BOARD_UPDATE, BOARD_SERACH } from "./types";
 
-export function loginUser(dataTosubmit) {
-    const request = axios.post("/api/users/login", dataTosubmit).then((response) => response.data);
+interface IUserDTO {
+    email?: string;
+    password?: string;
+    name?: string;
+}
+
+interface IBoardDTO {
+    id?: any;
+    title?: string;
+    contents?: string;
+    writer?: string;
+    writeDate?: string;
+}
+
+export async function loginUser(dataTosubmit: IUserDTO) {
+    const request = await axios.post("/api/users/login", dataTosubmit).then((response) => response.data);
 
     return {
         type: LOGIN_USER,
@@ -10,8 +24,8 @@ export function loginUser(dataTosubmit) {
     };
 }
 
-export function registerUser(dataTosubmit) {
-    const request = axios.post("/api/users/register", dataTosubmit).then((response) => response.data);
+export async function registerUser(dataTosubmit: IUserDTO) {
+    const request = await axios.post("/api/users/register", dataTosubmit).then((response) => response.data);
 
     return {
         type: REGISTER_USER,
@@ -19,8 +33,8 @@ export function registerUser(dataTosubmit) {
     };
 }
 
-export function boardWrite(dataTosubmit) {
-    const request = axios.post("/api/board/write", dataTosubmit).then((response) => response.data);
+export async function boardWrite(dataTosubmit: IBoardDTO) {
+    const request = await axios.post("/api/board/write", dataTosubmit).then((response) => response.data);
 
     return {
         type: BOARD_WRITER,
@@ -28,8 +42,8 @@ export function boardWrite(dataTosubmit) {
     };
 }
 
-export function boardRemove(dataTosubmit) {
-    const request = axios.post("/api/board/remove", dataTosubmit).then((response) => response.data);
+export async function boardRemove(dataTosubmit: any) {
+    const request = await axios.post("/api/board/remove", dataTosubmit).then((response) => response.data);
 
     return {
         type: BOARD_REMOVE,
@@ -37,8 +51,8 @@ export function boardRemove(dataTosubmit) {
     };
 }
 
-export function boardUpdate(dataTosubmit) {
-    const request = axios.post("/api/board/update", dataTosubmit).then((response) => response.data);
+export async function boardUpdate(dataTosubmit: IBoardDTO) {
+    const request = await axios.post("/api/board/update", dataTosubmit).then((response) => response.data);
 
     return {
         type: BOARD_UPDATE,
@@ -46,8 +60,8 @@ export function boardUpdate(dataTosubmit) {
     };
 }
 
-export function boardSearch(dataTosubmit) {
-    const request = axios.post("/api/board/search", dataTosubmit).then((response) => response.data);
+export async function boardSearch(dataTosubmit: IBoardDTO) {
+    const request = await axios.post("/api/board/search", dataTosubmit).then((response) => response.data);
 
     return {
         type: BOARD_SERACH,
@@ -55,8 +69,8 @@ export function boardSearch(dataTosubmit) {
     };
 }
 
-export function auth() {
-    const request = axios.get("/api/users/auth").then((response) => response.data);
+export async function auth() {
+    const request = await axios.get("/api/users/auth").then((response) => response.data);
 
     return {
         type: AUTH_USER,

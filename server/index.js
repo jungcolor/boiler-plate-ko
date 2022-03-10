@@ -29,7 +29,7 @@ app.get('/api/board/list', (req, res) => {
     Board.find((err, list) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).json({ success: true, list });
-    }).sort({ writerDate: -1 });
+    }).sort({ writeDate: -1 });
 });
 
 app.post('/api/board/detail', (req, res) => {
@@ -69,7 +69,6 @@ app.post('/api/board/update', (req, res) => {
 
 app.post('/api/board/search', (req, res) => {
     Board.find({ title: { $regex: req.body.contents } }, (err, searchData) => {
-        console.log(searchData);
         if (err) return res.json({ success: false, err });
         return res.status(200).json({ success: true, searchData: searchData });
     });

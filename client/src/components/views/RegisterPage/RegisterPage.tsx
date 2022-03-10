@@ -4,23 +4,29 @@ import { registerUser } from "../../../_actions/user_actions";
 import { useNavigate } from "react-router-dom";
 import Auth from "../../../hoc/auth";
 
+interface IFormDataDTO {
+    email: string;
+    password: string;
+    name: string;
+}
+
 // css
 import { Form, Input, Button, Space } from "antd";
 
-function RegisterPage(props) {
+function RegisterPage(props: any) {
     const dispatch = useDispatch();
     const navigate = useNavigate(); // v5 이상
     // state 생성
     const [form] = Form.useForm();
 
-    const onFinishHandler = (formData) => {
+    const onFinishHandler = (formData: IFormDataDTO) => {
         const body = {
             email: formData.email,
             password: formData.password,
             name: formData.name,
         };
 
-        dispatch(registerUser(body)).payload.then((response) => {
+        dispatch(registerUser(body)).then((response) => {
             if (response.payload.success) {
                 navigate("/login"); // v5이상
             } else {
@@ -29,7 +35,7 @@ function RegisterPage(props) {
         });
     };
 
-    const onResetHandler = (event) => {
+    const onResetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         form.resetFields();
     };
 

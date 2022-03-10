@@ -7,19 +7,24 @@ import Auth from "../../../hoc/auth";
 // css
 import { Form, Input, Button, Space } from "antd";
 
+interface IFormDataDTO {
+    email: string;
+    password: string;
+}
+
 function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate(); // v5 이상
 
     // state 생성
     const [form] = Form.useForm();
-    const onSubmitHandler = (formData) => {
+    const onSubmitHandler = (formData: IFormDataDTO) => {
         const body = {
             email: formData.email,
             password: formData.password,
         };
 
-        dispatch(loginUser(body)).payload.then((response) => {
+        dispatch(loginUser(body)).then((response) => {
             if (response.payload.loginSuccess) {
                 navigate("/"); // v5이상
             } else {

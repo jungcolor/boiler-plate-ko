@@ -7,6 +7,14 @@ import { boardRemove, boardSearch } from "../../../../_actions/user_actions";
 // css
 import { Table, Button, Space, Input } from "antd";
 
+interface ITableColumns {
+    key: string;
+    title: string;
+    dataIndex: string;
+    width?: string;
+    align?: string;
+}
+
 function ListPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -26,16 +34,16 @@ function ListPage() {
         fetchData();
     }, []);
 
-    const onNewHandler = (event) => {
+    const onNewHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/board/write");
     };
 
-    const onChangeHandler = (selectedRowKeys) => {
+    const onChangeHandler = (selectedRowKeys: []) => {
         setSelectedRowKeys(selectedRowKeys);
     };
 
-    const onDeleteHandler = (event) => {
-        dispatch(boardRemove(selectedRowKeys)).payload.then((response) => {
+    const onDeleteHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
+        dispatch(boardRemove(selectedRowKeys)).then((response) => {
             console.log(response);
             if (response.payload.success) {
                 fetchData(); // 데이터 삭제 후 리스트를 보여주기 위해 호출
@@ -54,7 +62,7 @@ function ListPage() {
 
         const body = { contents: searchValue };
 
-        dispatch(boardSearch(body)).payload.then((response) => {
+        dispatch(boardSearch(body)).then((response) => {
             if (response.payload.success) {
                 setRows(response.payload.searchData);
             }
@@ -68,18 +76,19 @@ function ListPage() {
         onChange: onChangeHandler,
     };
 
-    const columns = [
+    const columns: Array<any> = [
         {
             title: "번호",
             key: "number",
             dataIndex: "number",
-            width: "6%",
+            width: "7%",
+            align: "center",
         },
         {
             title: "제목",
             key: "title",
             dataIndex: "title",
-            render: (titOptions) => <Link to={`/board/detail?board_ID=${titOptions.id}`}>{titOptions.title}</Link>,
+            render: (titOptions: { id: string; title: string }) => <Link to={`/board/modify?board_ID=${titOptions.id}`}>{titOptions.title}</Link>,
         },
         {
             title: "작성자",
@@ -91,7 +100,7 @@ function ListPage() {
             title: "작성날짜",
             key: "writeDate",
             dataIndex: "writeDate",
-            width: "17%",
+            width: "25%",
         },
     ];
 

@@ -2,7 +2,7 @@
     "compilerOptions": {
         "outDir": "./dist",
         "sourceMap": true,
-        "noImplicitAny": false,
+        "noImplicitAny": true,
         "module": "ES6",
         "target": "ES5",
         "jsx": "react",

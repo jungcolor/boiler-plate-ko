@@ -20,7 +20,7 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "dev": "webpack server --config webpack/webpack.config.js --env env=dev --open --hot",
+        "start": "webpack server --config webpack/webpack.config.js --env env=dev",
         "build": "webpack --config webpack/webpack.config.js --env env=prod"
     },
     "eslintConfig": {

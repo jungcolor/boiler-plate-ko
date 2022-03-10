@@ -6,6 +6,12 @@ import { useNavigate } from "react-router-dom";
 // css
 import { Form, Input, Button, Space } from "antd";
 
+interface IFormDataDTO {
+    title: string;
+    writer: string;
+    contents: string;
+}
+
 function WritePage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -13,7 +19,7 @@ function WritePage() {
     // state
     const [form] = Form.useForm();
 
-    const onSubmitHandler = (formData) => {
+    const onSubmitHandler = (formData: IFormDataDTO) => {
         const body = {
             title: formData.title,
             writer: formData.writer,
@@ -21,7 +27,7 @@ function WritePage() {
             writeDate: toStringByFormatting(),
         };
 
-        dispatch(boardWrite(body)).payload.then((response) => {
+        dispatch(boardWrite(body)).then((response) => {
             if (response.payload.success) {
                 navigate("/board/list"); // v5이상
             } else {
@@ -34,15 +40,15 @@ function WritePage() {
         });
     };
 
-    const onResetHandler = (event) => {
+    const onResetHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         form.resetFields();
     };
 
-    const onListHandler = (event) => {
+    const onListHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
         navigate("/board/list");
     };
 
-    const leftPad = (value) => {
+    const leftPad = (value: number) => {
         if (value >= 10) {
             return value;
         }
@@ -55,8 +61,13 @@ function WritePage() {
         const year = date.getFullYear();
         const month = leftPad(date.getMonth() + 1);
         const day = leftPad(date.getDate());
+        const hour = leftPad(date.getHours());
+        const minites = leftPad(date.getMinutes());
+        const seconds = leftPad(date.getSeconds());
+        const yyyymmdd = [year, month, day].join(delimiter);
+        const hhmmss = [hour, minites, seconds].join(":");
 
-        return [year, month, day].join(delimiter);
+        return yyyymmdd + " " + hhmmss;
     };
 
     const layout = {
