@@ -25,11 +25,12 @@ function ModifyPage() {
 
     const fetchData = () => {
         const body = {
-            id: board_ID,
+            _id: board_ID,
         };
 
         dispatch(boardDetail(body)).then((response) => {
-            const detailData = response.payload;
+            const detailData = response.payload.detailData[0];
+
             form.setFields([
                 {
                     name: "title",

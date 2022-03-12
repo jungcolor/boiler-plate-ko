@@ -8,7 +8,7 @@ interface IUser {
 }
 
 interface IBoard {
-    id?: any;
+    _id?: any;
     title?: string;
     contents?: string;
     writer?: string;
