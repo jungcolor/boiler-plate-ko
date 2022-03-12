@@ -5,3 +5,4 @@ export const BOARD_WRITER = "BOARD_WRITER";
 export const BOARD_REMOVE = "BOARD_REMOVE";
 export const BOARD_UPDATE = "BOARD_UPDATE";
 export const BOARD_SERACH = "BOARD_SERACH";
+export const BOARD_DETAIL = "BOARD_DETAIL";

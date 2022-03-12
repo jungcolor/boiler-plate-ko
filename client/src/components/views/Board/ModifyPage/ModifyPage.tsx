@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import queryString from "query-string";
 import { useDispatch } from "react-redux";
-import { boardUpdate } from "../../../../_actions/user_actions";
+import { boardDetail, boardUpdate } from "../../../../_actions/user_actions";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // css
@@ -23,14 +23,13 @@ function ModifyPage() {
     // state
     const [form] = Form.useForm();
 
-    const fetchData = async () => {
+    const fetchData = () => {
         const body = {
-            _id: board_ID,
+            id: board_ID,
         };
 
-        await axios.post("/api/board/Detail", body).then((response) => {
-            const detailData = response.data.detailData[0];
-
+        dispatch(boardDetail(body)).then((response) => {
+            const detailData = response.payload;
             form.setFields([
                 {
                     name: "title",
