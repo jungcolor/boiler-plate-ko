@@ -1,20 +1,19 @@
-const mongoose = require("mongoose");
-const bcrypt = require('bcrypt');
+import * as mongoose from "mongoose";
 
-const boardSchema = mongoose.Schema({
+const boardSchema = new mongoose.Schema({
     title: {
         type: String,
-        minlength: 1
+        minlength: 1,
     },
     writer: {
         type: String,
     },
     contents: {
         type: String,
-        minlength: 1
+        minlength: 1,
     },
     token: {
-        type: String
+        type: String,
     },
     writeDate: {
         type: String,
@@ -23,4 +22,4 @@ const boardSchema = mongoose.Schema({
 
 const Board = mongoose.model("Board", boardSchema);
 
-module.exports = { Board };
+export default Board;
