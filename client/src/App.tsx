@@ -1,13 +1,22 @@
 import * as React from "react";
-import Page from "./components/views/Layout/Page/Page";
-import { BrowserRouter } from "react-router-dom";
+import * as ReactDOM from "react-dom";
+import { BrowserRouter, Route, Router, Routes } from "react-router-dom";
+import { Provider } from "react-redux";
+import { applyMiddleware, createStore } from "redux";
+import promiseMiddleware from "redux-promise";
+import ReduxThunk from "redux-thunk";
+import Reducer from "./reducers";
+import LayoutPage from "./components/layouts/LayoutPage";
 
-function App() {
-    return (
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+
+ReactDOM.render(
+    <Provider store={createStoreWithMiddleware(Reducer, (window as any).__REDUX_DEVTOOLS_EXTENSION__ && (window as any).__REDUX_DEVTOOLS_EXTENSION__())}>
         <BrowserRouter>
-            <Page />
+            <Routes>
+                <Route path="*" element={<LayoutPage />}></Route>
+            </Routes>
         </BrowserRouter>
-    );
-}
-
-export default App;
+    </Provider>,
+    document.getElementById("root")
+);

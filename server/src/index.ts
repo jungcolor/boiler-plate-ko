@@ -70,7 +70,7 @@ app.post("/api/board/search", (req, res) => {
     Board.find({ title: { $regex: req.body.contents } }, (err, searchData) => {
         if (err) return res.json({ success: false, err });
         return res.status(200).json({ success: true, searchData: searchData });
-    });
+    }).sort({ writeDate: -1 });
 });
 
 app.post("/api/board/remove", (req, res) => {
